@@ -1,0 +1,13 @@
+spring:
+  application:
+    name: GMALL-REGISTER
+server:
+  port: 8761
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false  #是否注册自己，
+    fetch-registry: false  #是否获取其他服务的地址
+    service-url:
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
