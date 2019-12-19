@@ -1,0 +1,17 @@
+spring:
+  application:
+    name: GMALL-ITEM
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    appname: GMALL-ITEM
+    prefer-ip-address: true
+feign:
+  hystrix:
+    enabled: true
+  httpclient:
+    connection-timeout: 3000000
+server:
+  port: 8082

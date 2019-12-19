@@ -65,17 +65,10 @@ public class ProductServiceImpl implements ProductService {
         return imageList;
     }
     //根据商品id查找销售属性和属性值
-    public List<PmsProductSaleAttr> spuSaleAttrList(String spuId) {
-        PmsProductSaleAttr pmsProductSaleAttr = new PmsProductSaleAttr();
-        pmsProductSaleAttr.setProductId(spuId);
-        List<PmsProductSaleAttr> productSaleAttrs = pmsProductSaleAttrMapper.select(pmsProductSaleAttr);
-        for (PmsProductSaleAttr productSaleAttr : productSaleAttrs) {
-            PmsProductSaleAttrValue pmsProductSaleAttrValue = new PmsProductSaleAttrValue();
-            pmsProductSaleAttrValue.setProductId(spuId);
-            pmsProductSaleAttrValue.setSaleAttrId(productSaleAttr.getSaleAttrId());
-            List<PmsProductSaleAttrValue> select = pmsProductSaleAttrValueMapper.select(pmsProductSaleAttrValue);
-            productSaleAttr.setSpuSaleAttrValueList(select);
-        }
+    public List<PmsProductSaleAttr> spuSaleAttrList(String skuId,String spuId) {
+
+        List<PmsProductSaleAttr> productSaleAttrs = pmsProductSaleAttrMapper.getProductSaleAttrs(skuId,spuId);
+
         return productSaleAttrs;
     }
 }

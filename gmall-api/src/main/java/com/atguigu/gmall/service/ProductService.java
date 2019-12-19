@@ -16,5 +16,5 @@ public interface ProductService {
 
     List<PmsProductImage> spuImageList(String spuId);
 
-    List<PmsProductSaleAttr> spuSaleAttrList(String spuId);
+    List<PmsProductSaleAttr> spuSaleAttrList(String skuId,String spuId);
 }

@@ -11,5 +11,7 @@ eureka:
 feign:
   hystrix:
     enabled: true
+  httpclient:
+    connection-timeout: 3000000
 server:
   port: 8081

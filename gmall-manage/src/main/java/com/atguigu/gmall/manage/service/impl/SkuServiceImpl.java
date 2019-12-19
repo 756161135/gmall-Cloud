@@ -1,17 +1,17 @@
 package com.atguigu.gmall.manage.service.impl;
 
-import com.atguigu.gmall.bean.PmsSkuAttrValue;
-import com.atguigu.gmall.bean.PmsSkuImage;
-import com.atguigu.gmall.bean.PmsSkuInfo;
-import com.atguigu.gmall.bean.PmsSkuSaleAttrValue;
+import com.atguigu.gmall.bean.*;
 import com.atguigu.gmall.manage.mapper.PmsSkuAttrValueMapper;
 import com.atguigu.gmall.manage.mapper.PmsSkuImageMapper;
 import com.atguigu.gmall.manage.mapper.PmsSkuInfoMapper;
 import com.atguigu.gmall.manage.mapper.PmsSkuSaleAttrValueMapper;
 import com.atguigu.gmall.service.SkuService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,5 +45,40 @@ public class SkuServiceImpl implements SkuService {
             pmsSkuSaleAttrValue.setSkuId(pmsSkuInfo.getId());
             pmsSkuSaleAttrValueMapper.insertSelective(pmsSkuSaleAttrValue);
         }
+    }
+
+    //根据skuid差库存
+    public PmsSkuInfo seleteSkuInfo(String skuId) {
+        PmsSkuInfo pmsSkuInfo1 =null;
+        if (StringUtils.isNoneBlank(skuId)) {
+            PmsSkuInfo pmsSkuInfo = new PmsSkuInfo();
+            pmsSkuInfo.setId(skuId);
+            pmsSkuInfo1 = pmsSkuInfoMapper.selectOne(pmsSkuInfo);
+            if (pmsSkuInfo1!=null) {
+                //获取skuId图片集
+                PmsSkuImage pmsSkuImage = new PmsSkuImage();
+                pmsSkuImage.setSkuId(skuId);
+                List<PmsSkuImage> skuImageList = pmsSkuImageMapper.select(pmsSkuImage);
+                pmsSkuInfo1.setSkuImageList(skuImageList);
+            }
+        }
+        return pmsSkuInfo1;
+    }
+
+    //根据商品id获取sku
+    public List<PmsSkuInfo> getSkuList(String spuId) {
+        List<PmsSkuInfo> pmsSkuInfoList=new ArrayList<>();
+        if(StringUtils.isNoneBlank(spuId)){
+            PmsSkuInfo pmsSkuInfo = new PmsSkuInfo();
+            pmsSkuInfo.setProductId(spuId);
+            pmsSkuInfoList= pmsSkuInfoMapper.select(pmsSkuInfo);
+            for (PmsSkuInfo skuInfo : pmsSkuInfoList) {
+                PmsSkuSaleAttrValue pmsSkuSaleAttrValue = new PmsSkuSaleAttrValue();
+                pmsSkuSaleAttrValue.setSkuId(skuInfo.getId());
+                List<PmsSkuSaleAttrValue> select = pmsSkuSaleAttrValueMapper.select(pmsSkuSaleAttrValue);
+                skuInfo.setSkuSaleAttrValueList(select);
+            }
+        }
+        return pmsSkuInfoList;
     }
 }

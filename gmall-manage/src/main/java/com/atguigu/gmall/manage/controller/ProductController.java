@@ -57,8 +57,8 @@ public class ProductController {
     }
     @RequestMapping("/spuSaleAttrList")
     @ResponseBody
-    public List<PmsProductSaleAttr> spuSaleAttrList(String spuId)  {
-        List<PmsProductSaleAttr> productSaleAttrs=productService.spuSaleAttrList(spuId);
+    public List<PmsProductSaleAttr> spuSaleAttrList(@RequestParam("skuId") String skuId ,@RequestParam("spuId") String spuId)  {
+        List<PmsProductSaleAttr> productSaleAttrs=productService.spuSaleAttrList(skuId,spuId);
         return productSaleAttrs;
     }
 }
